@@ -1,4 +1,4 @@
-# WP1 Software Description
+# Multichannel Extension of the BCCTN - epxerimentation repo
 # Binaural Speech Enhancement using Complex Transformer Networks (BCCTN)
 This repository contains the code for the neural network models, training and evaluation scripts for BCCTN.
 
