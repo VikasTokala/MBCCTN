@@ -37,7 +37,7 @@ class DCNN(nn.Module):
         self.kernel_size = kernel_size
         # self.kernel_num = [2, 8, 16, 32, 128, 128, 128]
         # self.kernel_num = [2, 16, 32, 64, 128, 256, 256]
-        self.kernel_num = [2] + kernel_num
+        self.kernel_num = [4] + kernel_num #[n] -> n/2 = is the number of input channels to the encoder for each of the binaural channel 
         self.masking_mode = masking_mode
         self.use_clstm = use_clstm
 
@@ -72,7 +72,7 @@ class DCNN(nn.Module):
         show_params(self)
         # self._flatten_parameters()
 
-    def forward(self, inputs):
+    def forward(self, inputs, bf):
 
         # 0. Extract STFT
         x = cspecs = self.stft(inputs)

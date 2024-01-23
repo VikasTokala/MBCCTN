@@ -9,20 +9,27 @@ from .model import DCNN
 
 class BinauralAttentionDCNN(DCNN):
 
-    def forward(self, inputs):
+    def forward(self, inputs, bf_output):
         # batch_size, binaural_channels, time_bins = inputs.shape
         cspecs_l = self.stft(inputs[:, 0])
-        cspecs_r = self.stft(inputs[:, 1])
+        cspecs_r = self.stft(inputs[:, 3])
         cspecs = torch.stack((cspecs_l, cspecs_r), dim=1)
 
+        cspecs_bf_l = self.stft(bf_output[:,0])
+        cspecs_bf_r = self.stft(bf_output[:,1])
+        
+        guided_cspecs_l = torch.stack((cspecs_l,cspecs_bf_l),dim=1) 
+        guided_cspecs_r = torch.stack((cspecs_r,cspecs_bf_r),dim=1)
+        
         # breakpoint()
 
         # encoder_out_l = self.encoder(attention_enc[:, 0, :, :].unsqueeze(1))
         # encoder_out_r = self.encoder(attention_enc[:, 1, :, :].unsqueeze(1))
 
-        encoder_out_l = self.encoder(cspecs_l.unsqueeze(1))
-        encoder_out_r = self.encoder(cspecs_r.unsqueeze(1))
-        # breakpoint()
+        encoder_out_l = self.encoder(guided_cspecs_l)
+        encoder_out_r = self.encoder(guided_cspecs_r)
+        
+        
 
         # encoder_out = torch.cat((encoder_out_l[-1], encoder_out_r[-1]), dim=1)
         # attention_enc = self.attention_enc(encoder_out)

@@ -17,14 +17,17 @@ def create_torch_dataloader(config, mode):
     if mode == "training":
         noisy_dataset_path = config["dataset"]["noisy_training_dataset_dir"]
         target_dataset_path = config["dataset"]["target_training_dataset_dir"]
+        bf_dataset_path = config["dataset"]["bf_training_dataset_dir"]
         shuffle = True
     elif mode == "validation":
         noisy_dataset_path = config["dataset"]["noisy_validation_dataset_dir"]
         target_dataset_path = config["dataset"]["target_validation_dataset_dir"]
+        bf_dataset_path = config["dataset"]["bf_validation_dataset_dir"]
         shuffle = False
     elif mode == "test":
         noisy_dataset_path = config["dataset"]["noisy_test_dataset_dir"]
         target_dataset_path = config["dataset"]["target_test_dataset_dir"]
+        bf_dataset_path = config["dataset"]["bf_test_dataset_dir"]
         shuffle = False
     elif mode == "test_rtf":
         noisy_dataset_path = config["test_rtf"]["noisy_dir"]
@@ -36,7 +39,7 @@ def create_torch_dataloader(config, mode):
     else:
         mono = True
 
-    dataset = BaseDataset(noisy_dataset_path, target_dataset_path, mono=mono)
+    dataset = BaseDataset(noisy_dataset_path, target_dataset_path, bf_dataset_path, mono=mono)
 
     return torch.utils.data.DataLoader(
         dataset,

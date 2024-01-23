@@ -1,8 +1,11 @@
 sr: 16000
-noisy_training_dataset_dir: /Users/vtokala/Documents/Research/di_nn/Dataset/noisy_trainset_1f
-noisy_validation_dataset_dir: /Users/vtokala/Documents/Research/di_nn/Dataset/noisy_valset_1f
 noisy_test_dataset_dir: /Users/vtokala/Documents/Research/di_nn/Dataset/noisy_testset_1f
-target_training_dataset_dir: /Users/vtokala/Documents/Research/di_nn/Dataset/clean_trainset_1f
-target_validation_dataset_dir: /Users/vtokala/Documents/Research/di_nn/Dataset/clean_valset_1f
+noisy_training_dataset_dir: /Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Noisy_trainset
+noisy_validation_dataset_dir: /Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Noisy_valset
 target_test_dataset_dir: /Users/vtokala/Documents/Research/di_nn/Dataset/clean_testset_1f
+target_training_dataset_dir: /Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Clean_trainset
+target_validation_dataset_dir: /Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Clean_valset
+bf_test_dataset_dir: /Users/vtokala/Documents/Research/di_nn/Dataset/clean_testset_1f
+bf_training_dataset_dir: /Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_omvdr_trainset
+bf_validation_dataset_dir: /Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_omvdr_valset
 

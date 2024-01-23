@@ -84,10 +84,10 @@ class BaseLightningModule(pl.LightningModule):
 
     def _step(self, batch, batch_idx, log_model_output=False,
               log_labels=False):
-
-        x, y = batch
+        
+        x, y , b = batch
         # 1. Compute model output and loss
-        output = self.model(x)
+        output = self.model(x , b)
         # model_target = self.model(y)
         loss = self.loss(output, y)
         # from GPUtil import showUtilization as gpu_usage
