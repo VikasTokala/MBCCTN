@@ -30,7 +30,7 @@ class BinauralLoss(Module):
         
     def forward(self, model_output, targets):
         target_stft_l = self.stft(targets[:, 0])
-        target_stft_r = self.stft(targets[:, 1])
+        target_stft_r = self.stft(targets[:, 3])
         
 
         output_stft_l = self.stft(model_output[:, 0])
@@ -41,7 +41,7 @@ class BinauralLoss(Module):
         if self.snr_loss_weight > 0:
             
             snr_l = snr_loss(model_output[:, 0], targets[:, 0])
-            snr_r = snr_loss(model_output[:, 1], targets[:, 1])
+            snr_r = snr_loss(model_output[:, 1], targets[:, 3])
           
             snr_loss_lr = - (snr_l + snr_r)/2
            
@@ -52,7 +52,7 @@ class BinauralLoss(Module):
         
         if self.stoi_weight > 0:
             stoi_l = self.stoi_loss(model_output[:, 0], targets[:, 0])
-            stoi_r = self.stoi_loss(model_output[:, 1], targets[:, 1])
+            stoi_r = self.stoi_loss(model_output[:, 1], targets[:, 3])
 
             stoi_loss = (stoi_l+stoi_r)/2
             bin_stoi_loss = self.stoi_weight*stoi_loss.mean()

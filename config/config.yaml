@@ -16,7 +16,7 @@ defaults:
 model:
   attention: true
   ild_weight: 1
-  ipd_weight: 10
+  ipd_weight: 1
   snr_loss_weight: 1
   stoi_weight: 10
 training:

@@ -89,6 +89,7 @@ class BaseLightningModule(pl.LightningModule):
         # 1. Compute model output and loss
         output = self.model(x , b)
         # model_target = self.model(y)
+        # breakpoint()
         loss = self.loss(output, y)
         # from GPUtil import showUtilization as gpu_usage
 
