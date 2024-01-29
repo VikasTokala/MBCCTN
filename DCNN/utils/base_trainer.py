@@ -153,8 +153,8 @@ class BaseLightningModule(pl.LightningModule):
     def test_epoch_end(self, outputs):
         self._epoch_end(outputs, epoch_type="test", save_pickle=True)
 
-    def forward(self, x):
-        return self.model(x)
+    def forward(self, x, b):
+        return self.model(x, b)
 
     def fit(self, dataset_train, dataset_val):
         super().fit(self.model, dataset_train, val_dataloaders=dataset_val)
