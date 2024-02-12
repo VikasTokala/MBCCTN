@@ -25,6 +25,9 @@ config = {
         "target_test_dataset_dir": "/Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Clean_testset",
         "target_training_dataset_dir": "/Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Clean_trainset",
         "target_validation_dataset_dir": "/Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Clean_valset",
+        "bf_test_dataset_dir": "/Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_omvdr_testset",
+        "bf_training_dataset_dir": "/Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_omvdr_trainset",
+        "bf_validation_dataset_dir": "/Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_omvdr_valset"
 
     },
     "model":{
@@ -43,8 +46,8 @@ GlobalHydra.instance().clear()
 initialize(config_path="./config")
 config = compose("config")
 
-test_name = 'ISO'
-MODEL_CHECKPOINT_PATH = '/Users/vtokala/Documents/Research/MBCCTN_FS/outputs/fsMBCCTN_hpc_v1.ckpt'
+test_name = 'FCIM'
+MODEL_CHECKPOINT_PATH = '/Users/vtokala/Documents/Research/MBCCTN/outputs/GuidedBFenhancement.ckpt'
 model = DCNNLightningModule(config)
 model.eval()
 torch.set_grad_enabled(False)
@@ -64,8 +67,9 @@ for j in range(len(paths)):
     NOISY_DATASET_PATH = os.path.join(paths[j],"Noisy_testset/")
     print(NOISY_DATASET_PATH)
     CLEAN_DATASET_PATH = os.path.join(paths[j],"Clean_testset/")
-    ENHANCED_DATASET_PATH = os.path.join(pathsEn[j],"E2E_MBCCTN_"+test_name+"/")
-    dataset = BaseDataset(NOISY_DATASET_PATH, CLEAN_DATASET_PATH, mono=False)
+    BF_DATASET_PATH = os.path.join(paths[j],"FCIM/")
+    ENHANCED_DATASET_PATH = os.path.join(pathsEn[j],"GMBCCTN_"+test_name+"/")
+    dataset = BaseDataset(NOISY_DATASET_PATH, CLEAN_DATASET_PATH, BF_DATASET_PATH, mono=False)
     
     if os.path.isdir(ENHANCED_DATASET_PATH):
         print("Folder for Enhanced Signals Exists!")
@@ -122,13 +126,14 @@ for j in range(len(paths)):
 
         noisy_samples = (batch[0])
         clean_samples = (batch[1])
-        model_output = model(noisy_samples)[0].detach().cpu()
+        bf_output  = (batch[2])
+        model_output = model(noisy_samples,bf_output)[0].detach().cpu()
         model_output = model_output/torch.max(model_output)
         # print(model_output.shape)
 
         # breakpoint()
     #     torchaudio.save(path, waveform, sample_rate)
-        sf.write(ENHANCED_DATASET_PATH + os.path.basename(batch[2][0])[:len(os.path.basename(batch[2][0]))-4] + "_" + test_name + ".wav", model_output.numpy().transpose(), 16000) 
+        sf.write(ENHANCED_DATASET_PATH + os.path.basename(batch[3][0])[:len(os.path.basename(batch[3][0]))-4] + "_" + test_name + ".wav", model_output.numpy().transpose(), 16000) 
         # print(ENHANCED_DATASET_PATH + os.path.basename(batch[2][0])[:len(os.path.basename(batch[2][0]))-4] + "_DCCTN.wav")
         print(f"===== Computing Signal {i+1} of ", len(dataloader),"=====")
 
