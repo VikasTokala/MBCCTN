@@ -47,6 +47,13 @@ class BinauralLoss(Module):
            
             bin_snr_loss = self.snr_loss_weight*snr_loss_lr
             
+            if torch.isnan(bin_snr_loss):
+                bin_snr_loss = 0
+            
+            else:
+                bin_snr_loss = bin_snr_loss
+            
+            
             print('\n SNR Loss = ', bin_snr_loss)
             loss += bin_snr_loss
         
@@ -56,6 +63,13 @@ class BinauralLoss(Module):
 
             stoi_loss = (stoi_l+stoi_r)/2
             bin_stoi_loss = self.stoi_weight*stoi_loss.mean()
+            
+            if torch.isnan(bin_stoi_loss):
+                bin_stoi_loss = 0.7
+            
+            else:
+                bin_stoi_loss = bin_stoi_loss
+                
             print('\n STOI Loss = ', bin_stoi_loss)
             loss += bin_stoi_loss
 
@@ -65,12 +79,23 @@ class BinauralLoss(Module):
             
             bin_ild_loss = self.ild_weight*ild_loss
             print('\n ILD Loss = ', bin_ild_loss)
+            
+            if torch.isnan(bin_ild_loss):
+                bin_ild_loss = 1
+            else:
+                bin_ild_loss = bin_ild_loss
+            
             loss += bin_ild_loss
 
         if self.ipd_weight > 0:
             ipd_loss = ipd_loss_rads(target_stft_l, target_stft_r,
                                      output_stft_l, output_stft_r)
             bin_ipd_loss = self.ipd_weight*ipd_loss
+            
+            if torch.isnan(bin_ipd_loss):
+                bin_ipd_loss = 0.1
+            else:
+                bin_ipd_loss = bin_ipd_loss
             
             print('\n IPD Loss = ', bin_ipd_loss)
             loss += bin_ipd_loss
