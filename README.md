@@ -1,6 +1,6 @@
-# Multichannel Extension of the BCCTN - epxerimentation repo
+# Multichannel Extension of the BCCTN - experimentation repo
 # Binaural Speech Enhancement using Complex Transformer Networks (BCCTN)
-This repository contains the code for the neural network models, training and evaluation scripts for BCCTN.
+This repository contains the code for the neural network models, training and evaluation scripts for MBCCTN.
 
 
   

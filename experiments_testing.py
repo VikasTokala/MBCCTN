@@ -25,9 +25,9 @@ config = {
         "target_test_dataset_dir": "/Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Clean_testset",
         "target_training_dataset_dir": "/Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Clean_trainset",
         "target_validation_dataset_dir": "/Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Clean_valset",
-        "bf_test_dataset_dir": "/Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_omvdr_testset",
-        "bf_training_dataset_dir": "/Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_omvdr_trainset",
-        "bf_validation_dataset_dir": "/Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_omvdr_valset"
+        "bf_test_dataset_dir": "/Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_fcim_testset",
+        "bf_training_dataset_dir": "/Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_fcim_trainset",
+        "bf_validation_dataset_dir": "/Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_fcim_valset"
 
     },
     "model":{
@@ -46,8 +46,8 @@ GlobalHydra.instance().clear()
 initialize(config_path="./config")
 config = compose("config")
 
-test_name = 'FCIM'
-MODEL_CHECKPOINT_PATH = '/Users/vtokala/Documents/Research/MBCCTN/outputs/GuidedBFenhancement.ckpt'
+test_name = 'OMVDR_OFF_20'
+MODEL_CHECKPOINT_PATH = '/Users/vtokala/Documents/Research/MBCCTN/DCNN/Checkpoints/mbcctn_kaggle_50E_OMVDR.ckpt'
 model = DCNNLightningModule(config)
 model.eval()
 torch.set_grad_enabled(False)
@@ -67,7 +67,7 @@ for j in range(len(paths)):
     NOISY_DATASET_PATH = os.path.join(paths[j],"Noisy_testset/")
     print(NOISY_DATASET_PATH)
     CLEAN_DATASET_PATH = os.path.join(paths[j],"Clean_testset/")
-    BF_DATASET_PATH = os.path.join(paths[j],"FCIM/")
+    BF_DATASET_PATH = os.path.join(paths[j],"OMVDR_OFF_20/")
     ENHANCED_DATASET_PATH = os.path.join(pathsEn[j],"GMBCCTN_"+test_name+"/")
     dataset = BaseDataset(NOISY_DATASET_PATH, CLEAN_DATASET_PATH, BF_DATASET_PATH, mono=False)
     
@@ -102,21 +102,17 @@ for j in range(len(paths)):
         os.mkdir(ENHANCED_DATASET_PATH)
     
     
-    dataloader = torch.utils.data.DataLoader(
-        dataset,
-        batch_size=1,
-        shuffle=False,
-        pin_memory=True,
-        drop_last=False
-        
-
-    )
+    dataloader = torch.utils.data.DataLoader(   dataset,
+                                                batch_size=1,
+                                                shuffle=False,
+                                                pin_memory=True,
+                                                drop_last=False)
 
 
     dataloader = iter(dataloader)
-    # k = len(dataloader)
+    k = len(dataloader)
 
-    for i in range (len(dataloader)): # Enhance 10 samples
+    for i in range (100): # Enhance 10 samples
         try:
             batch = next(dataloader)
 
@@ -126,7 +122,11 @@ for j in range(len(paths)):
 
         noisy_samples = (batch[0])
         clean_samples = (batch[1])
+        # bf_output_l  = (batch[2])[:,0,:]
+        # bf_output_r = (batch[2])[:,3,:]
         bf_output  = (batch[2])
+        # bf_output = torch.stack((bf_output_l,bf_output_r),dim=1)
+        
         model_output = model(noisy_samples,bf_output)[0].detach().cpu()
         model_output = model_output/torch.max(model_output)
         # print(model_output.shape)

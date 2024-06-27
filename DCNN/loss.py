@@ -151,6 +151,7 @@ def l2_norm(s1, s2):
     return norm
 
 
+
 def snr_loss(s1, s_target, eps=EPS, reduce_mean=True):
     
     e_nosie = s1 - s_target
@@ -174,6 +175,22 @@ def ild_db(s1, s2, eps=EPS):
 
     return ild_value
 
+def gcc_phat_stft(target_stft_l, target_stft_r,
+                output_stft_l, output_stft_r, EPS=1e-8):
+    
+    cross_corr_target = target_stft_l * target_stft_r.conj()
+    cross_corr_output = output_stft_l * output_stft_r.conj()
+    
+    target_phase = cross_corr_target / (torch.abs(cross_corr_target) + EPS)
+    output_phase = cross_corr_output / (torch.abs(cross_corr_output) + EPS)
+    
+    phat_error = target_phase - output_phase
+    
+    return phat_error
+    
+    
+    
+    
 
 def ild_loss_db(target_stft_l, target_stft_r,
                 output_stft_l, output_stft_r, avg_mode=None):
@@ -229,7 +246,8 @@ def ipd_rad(s1, s2, eps=EPS, avg_mode=None):
     # s1 = _avg_signal(s1, avg_mode)
     # s2 = _avg_signal(s2, avg_mode)
 
-    ipd_value = ((s1 + eps)/(s2 + eps)).angle()
+    ipd_value_uw = torch.angle(s1) - torch.angle(s2)
+    ipd_value = torch.remainder(ipd_value_uw + torch.pi, 2 * torch.pi) - torch.pi
 
     return ipd_value
 

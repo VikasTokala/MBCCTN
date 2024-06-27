@@ -1,7 +1,7 @@
 dataset:
-  bf_test_dataset_dir: /Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_omvdr_testset
-  bf_training_dataset_dir: /Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_omvdr_trainset
-  bf_validation_dataset_dir: /Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_omvdr_valset
+  bf_test_dataset_dir: /Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_fcim_testset
+  bf_training_dataset_dir: /Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_fcim_trainset
+  bf_validation_dataset_dir: /Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Enhanced_fcim_valset
   noisy_test_dataset_dir: /Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Noisy_testset
   noisy_training_dataset_dir: /Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Noisy_trainset
   noisy_validation_dataset_dir: /Users/vtokala/Documents/Research/Databases/Dataset_Binaural_2S/Multichannel_dataset/Noisy_valset

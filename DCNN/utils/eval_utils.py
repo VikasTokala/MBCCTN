@@ -17,6 +17,17 @@ def ild_db(s1, s2, eps=EPS, avg_mode=None):
 
     return ild_value
 
+def gcc_phat_stft(target_stft_l, target_stft_r, EPS=1e-8):
+    
+    cross_corr_target = target_stft_l * target_stft_r.conj()
+    # cross_corr_output = output_stft_l * output_stft_r.conj()
+    
+    target_phat = cross_corr_target / (torch.abs(cross_corr_target) + EPS)
+    # output_phase = cross_corr_output / (torch.abs(cross_corr_output) + EPS)
+    
+    
+    
+    return target_phat
 
 
 def ipd_rad(s1, s2, eps=EPS, avg_mode=None):
@@ -24,7 +35,7 @@ def ipd_rad(s1, s2, eps=EPS, avg_mode=None):
     # s2 = _avg_signal(s2, avg_mode)
 
     ipd_value_uw = torch.angle(s1) - torch.angle(s2)
-    ipd_value = torch.remainder(ipd_value_uw + torch.pi, 2 * torch.pi) - torch.pi
+    ipd_value = torch.remainder(ipd_value_uw + torch.pi, 2* torch.pi) - torch.pi
         # Check for phase wrapping
     
 

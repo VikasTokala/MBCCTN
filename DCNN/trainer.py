@@ -16,7 +16,7 @@ class DCNNTrainer(BaseTrainer):
         super().__init__(lightning_module,
                          config["training"]["n_epochs"],
                          early_stopping_config=config["training"]["early_stopping"],
-                         checkpoint_path=None,
+                        #  checkpoint_path=config["training"]["train_checkpoint_path"],
                         #  strategy=config["training"]["strategy"],
                          accelerator=config["training"]["accelerator"])
                         # accelerator='mps')
